@@ -5,24 +5,29 @@ import Model.Color;
 import Model.Size;
 import Model.SocksBatch;
 import Service.SocksService;
+import dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/socks")
+@RequiredArgsConstructor
 @Tag(name = "API по работе с носками", description = "CRUD - операции для носок")
 public class SocksController {
+    private final SocksService socksService;
 
     @PostMapping
     @Operation(summary = "Регистрирует приход товара на склад.")
     @ApiResponse(responseCode = "200", description = "удалось произвести отпуск носков со склада")
     @ApiResponse(responseCode = "400", description = "товара нет на складе в нужном количестве или параметры запроса имеют некорректный формат")
     @ApiResponse(responseCode = "500", description = "произошла ошибка приложения")
-    public ResponseEntity<Void> accept(@RequestBody SocksBatch socksBatch) {
-
+    public ResponseEntity<ResponseDto> accept(@RequestBody SocksBatch socksBatch) {
+        socksService.accept(socksBatch);
+        return ResponseEntity.ok(new ResponseDto("Носки успешно добавлены на склад"));
     }
 
     @PutMapping
@@ -30,7 +35,9 @@ public class SocksController {
     @ApiResponse(responseCode = "200", description = "удалось произвести отпуск носков со склада")
     @ApiResponse(responseCode = "400", description = "товара нет на складе в нужном количестве или параметры запроса имеют некорректный формат")
     @ApiResponse(responseCode = "500", description = "произошла ошибка приложения")
-    public ResponseEntity<Void> issuance(@RequestBody SocksBatch socksBatch) {
+    public ResponseEntity<ResponseDto> issuance(@RequestBody SocksBatch socksBatch) {
+        int stockCount = socksService.issuance(socksBatch);
+        return ResponseEntity.ok(new ResponseDto(stockCount + " носков отпущено со склада"));
     }
 
     @GetMapping
@@ -38,8 +45,9 @@ public class SocksController {
     @ApiResponse(responseCode = "200", description = "удалось произвести отпуск носков со склада")
     @ApiResponse(responseCode = "400", description = "товара нет на складе в нужном количестве или параметры запроса имеют некорректный формат")
     @ApiResponse(responseCode = "500", description = "произошла ошибка приложения")
-    public ResponseEntity<Void> getCount(@RequestParam Color color, @RequestParam Size size, @RequestParam int cottonPartMin,@RequestParam int cottonPartMax) {
-
+    public ResponseEntity<ResponseDto> getCount(@RequestParam Color color, @RequestParam Size size, @RequestParam int cottonPartMin, @RequestParam int cottonPartMax) {
+        int stockCount = socksService.getCount(color, size, cottonPartMin, cottonPartMax);
+        return ResponseEntity.ok(new ResponseDto("Количество носков: " + stockCount));
     }
 
     @DeleteMapping
@@ -47,7 +55,9 @@ public class SocksController {
     @ApiResponse(responseCode = "200", description = "удалось произвести отпуск носков со склада")
     @ApiResponse(responseCode = "400", description = "товара нет на складе в нужном количестве или параметры запроса имеют некорректный формат")
     @ApiResponse(responseCode = "500", description = "произошла ошибка приложения")
-    public ResponseEntity<Void> reject(@RequestBody SocksBatch socksBatch) {
-
+    public ResponseEntity<ResponseDto> reject(@RequestBody SocksBatch socksBatch) {
+        int stockCount = socksService.reject(socksBatch);
+        return ResponseEntity.ok(new ResponseDto(stockCount + " носков списано со склада"));
     }
 }
+
