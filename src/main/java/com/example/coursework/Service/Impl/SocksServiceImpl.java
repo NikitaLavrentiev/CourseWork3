@@ -1,15 +1,15 @@
-package Service.Impl;
+package com.example.coursework.Service.Impl;
 
-import Exeptions.ValidationException;
-import Model.Color;
-import Model.Size;
-import Model.Socks;
-import Model.SocksBatch;
-import Service.SocksService;
+import com.example.coursework.Exeptions.ValidationException;
+import com.example.coursework.Model.Socks.Color;
+import com.example.coursework.Model.Socks.Size;
+import com.example.coursework.Model.Socks.Socks;
+import com.example.coursework.Model.Socks.SocksBatch;
+import com.example.coursework.Service.SocksService;
+import com.example.coursework.Service.ValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import Service.ValidationService;
-import repository.SocksRepository;
+import com.example.coursework.repository.SocksRepository;
 
 import java.util.Map;
 

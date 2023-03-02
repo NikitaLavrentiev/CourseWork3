@@ -1,7 +1,7 @@
-package repository;
+package com.example.coursework.repository;
 
-import Model.Socks;
-import Model.SocksBatch;
+import com.example.coursework.Model.Socks.Socks;
+import com.example.coursework.Model.Socks.SocksBatch;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;

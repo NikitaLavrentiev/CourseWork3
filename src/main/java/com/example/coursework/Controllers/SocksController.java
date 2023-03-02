@@ -1,11 +1,12 @@
-package Controllers;
+package com.example.coursework.Controllers;
 
 
-import Model.Color;
-import Model.Size;
-import Model.SocksBatch;
-import Service.SocksService;
-import dto.ResponseDto;
+
+import com.example.coursework.Model.Socks.Color;
+import com.example.coursework.Model.Socks.Size;
+import com.example.coursework.Model.Socks.SocksBatch;
+import com.example.coursework.Service.SocksService;
+import com.example.coursework.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
