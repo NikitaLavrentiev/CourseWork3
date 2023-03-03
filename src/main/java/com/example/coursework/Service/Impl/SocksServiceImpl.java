@@ -7,11 +7,10 @@ import com.example.coursework.Model.Socks.Socks;
 import com.example.coursework.Model.Socks.SocksBatch;
 import com.example.coursework.Service.FileService;
 import com.example.coursework.Service.SocksService;
-import com.example.coursework.Service.StoreOperationService;
 import com.example.coursework.Service.ValidationService;
 import com.example.coursework.repository.SocksRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
-import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,12 +27,9 @@ public class SocksServiceImpl implements SocksService {
     private final SocksRepository socksRepository;
     private final ValidationService validationService;
     private final FileService fileService;
-    private final StoreOperationService operationService;
 
     @Value("${path.to.data.file}")
-    private String dataFilePath;
-    @Value("${name.of.data.file}")
-    private String dataFileName;
+    private Path dataFilePath;
 
     @Override
     public void accept(SocksBatch socksBatch) {
@@ -74,12 +70,13 @@ public class SocksServiceImpl implements SocksService {
     }
     @Override
     public File exportFile() throws IOException {
-        return fileService.saveToFile(socksRepository.getList(), Path.of(dataFilePath)).toFile();
+        return fileService.saveToFile(socksRepository.getList(), dataFilePath).toFile();
     }
 
     @Override
     public void importFile(MultipartFile file) throws IOException {
-        List<SocksBatch> socksBatchList = fileService.uploadFromFile(file, dataFilePath, new TypeReference<List<SocksBatch>>() {}); //идея ругается Type 'org.springframework.asm.TypeReference' does not have type parameters
+        List<SocksBatch> socksBatchList = fileService.uploadFromFile(file, dataFilePath, new TypeReference<>() {
+        });
         socksRepository.replace(socksBatchList);
     }
 

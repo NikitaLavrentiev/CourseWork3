@@ -5,8 +5,8 @@ import com.example.coursework.Model.Operation.StoreOperation;
 import com.example.coursework.Model.Socks.SocksBatch;
 import com.example.coursework.Service.FileService;
 import com.example.coursework.Service.StoreOperationService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
-import org.springframework.asm.TypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +47,7 @@ public class StoreOperationServiceImpl implements StoreOperationService {
 
     @Override
     public void importFile(MultipartFile file) throws IOException {
-        operationList = fileService.uploadFromFile(file, path, new TypeReference<List<StoreOperation>>() {}); // идея ругается Type 'org.springframework.asm.TypeReference' does not have type parameters
+        operationList = fileService.uploadFromFile(file, path, new TypeReference<>() {
+        });
     }
 }

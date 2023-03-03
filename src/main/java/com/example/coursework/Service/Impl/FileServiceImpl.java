@@ -4,9 +4,8 @@ import com.example.coursework.Service.FileService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -30,7 +29,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public <T> List<T> uploadFromFile(MultipartFile file, Path path, TypeReference typeReference) throws IOException {
+    public <T> List<T> uploadFromFile(MultipartFile file, Path path, TypeReference<List<T>> typeReference) throws IOException {
         uploadFile(file, path);
         return readListFromFile(path, typeReference);
     }

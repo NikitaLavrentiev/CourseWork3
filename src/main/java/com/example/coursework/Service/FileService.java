@@ -10,5 +10,5 @@ import java.util.List;
 public interface FileService {
     <T> Path saveToFile(T content, Path path) throws IOException;
 
-    <T> List<T> uploadFromFile(MultipartFile file, Path path, TypeReference typeReference) throws IOException;
+    <T> List<T> uploadFromFile(MultipartFile file, Path path, TypeReference<List<T>> typeReference) throws IOException;
 }
