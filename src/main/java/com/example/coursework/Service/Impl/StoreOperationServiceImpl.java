@@ -47,7 +47,6 @@ public class StoreOperationServiceImpl implements StoreOperationService {
 
     @Override
     public void importFile(MultipartFile file) throws IOException {
-        operationList = fileService.uploadFromFile(file, path, new TypeReference<List<StoreOperation>>() {
-        });
+        operationList = fileService.uploadFromFile(file, path, new TypeReference<List<StoreOperation>>() {}); // идея ругается Type 'org.springframework.asm.TypeReference' does not have type parameters
     }
 }
