@@ -1,7 +1,6 @@
 package com.example.coursework.Controllers;
 
 
-import com.example.coursework.Exeptions.ValidationException;
 import com.example.coursework.Model.Socks.Color;
 import com.example.coursework.Model.Socks.Size;
 import com.example.coursework.Model.Socks.SocksBatch;
@@ -56,14 +55,10 @@ public class SocksController {
     public ResponseEntity<ResponseDto> issuance(@RequestBody SocksBatch socksBatch) {
         int stockCount = socksService.issuance(socksBatch);
         int quantity;
-        try {
-            quantity = socksService.getCount(socksBatch.getSocks().getColor(),
-                    socksBatch.getSocks().getSize(),
-                    0,
-                    100);
-        } catch (ValidationException e) {
-            throw new RuntimeException(e);
-        }
+        quantity = socksService.getCount(socksBatch.getSocks().getColor(),
+                socksBatch.getSocks().getSize(),
+                0,
+                100);
         return ResponseEntity.ok(new ResponseDto(stockCount + " носков отпущено со склада"));
     }
 
@@ -80,14 +75,12 @@ public class SocksController {
                     description = "произошла ошибка приложения")
     })
     public ResponseEntity<ResponseDto> getCount(@RequestParam Color color, @RequestParam Size size, @RequestParam int cottonPartMin, @RequestParam int cottonPartMax) {
-        int socksCount = 0;
-        try {
-            socksCount = socksService.getCount(color, size, cottonPartMin, cottonPartMin);
+        int socksCount = socksService.getCount(color, size, cottonPartMin, cottonPartMin);
+        if (socksCount > 0) {
             return ResponseEntity.ok(new ResponseDto("Запрошенных пар носков на складе: " + socksCount));
-        } catch (ValidationException e) {
-            e.printStackTrace();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping

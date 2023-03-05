@@ -11,6 +11,7 @@ public enum Color {
     BLACK("Чёрный");
 
     String color;
+
     Color(String color) {
         this.color = color;
     }

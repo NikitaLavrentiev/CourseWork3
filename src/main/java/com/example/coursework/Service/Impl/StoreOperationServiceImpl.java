@@ -7,6 +7,7 @@ import com.example.coursework.Service.FileService;
 import com.example.coursework.Service.StoreOperationService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,8 @@ public class StoreOperationServiceImpl implements StoreOperationService {
 
     private final FileService fileService;
     private List<StoreOperation> operationList = new ArrayList<>();
-    private final Path path = Path.of("src/main/resources", "socks-operations.json");
+    @Value("${path.to.data.file}")
+    private Path dataFilePath;
 
     @Override
     public void accept(SocksBatch socksBatch) {
@@ -41,13 +43,13 @@ public class StoreOperationServiceImpl implements StoreOperationService {
 
     @Override
     public File exportFile() throws IOException {
-        return fileService.saveToFile(operationList, path).toFile();
+        return fileService.saveToFile(operationList, dataFilePath).toFile();
 
     }
 
     @Override
     public void importFile(MultipartFile file) throws IOException {
-        operationList = fileService.uploadFromFile(file, path, new TypeReference<>() {
+        operationList = fileService.uploadFromFile(file, dataFilePath, new TypeReference<>() {
         });
     }
 }

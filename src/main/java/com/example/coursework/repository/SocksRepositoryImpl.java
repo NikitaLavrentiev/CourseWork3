@@ -5,13 +5,13 @@ import com.example.coursework.Model.Socks.SocksBatch;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class SocksRepositoryImpl implements SocksRepository {
-    private final HashMap<Socks, Integer> socksMap = new HashMap<>();
+    private Map<Socks, Integer> socksMap;
+
     @Override
     public void save(SocksBatch socksBatch) {
         Socks socks = socksBatch.getSocks();
@@ -30,7 +30,7 @@ public class SocksRepositoryImpl implements SocksRepository {
         if (socksMap.containsKey(socks)) {
             int quantity = socksBatch.getQuantity();
             if (quantity > socksBatch.getQuantity()) {
-                socksMap.replace((socks), socksMap.get(socks) - socksBatch.getQuantity());
+                socksMap.replace((socks), quantity - socksBatch.getQuantity());
                 return socksBatch.getQuantity();
             } else {
                 socksMap.remove(socks);
@@ -39,6 +39,7 @@ public class SocksRepositoryImpl implements SocksRepository {
         }
         return 0;
     }
+
     @Override
     public List<SocksBatch> getList() {
         List<SocksBatch> socksBatchList = new ArrayList<>();

@@ -54,7 +54,7 @@ public class FileController {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(socksFile));
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(socksFile.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + socksFile.getName())
                     .body(resource);
@@ -78,7 +78,7 @@ public class FileController {
                     description = "Файл не принят на сервер, либо ошибка сервера. Обратитесь к администратору"
             )
     })
-    @GetMapping("/import")
+    @GetMapping(value = "/import", consumes = "multipart/from-data")
     public ResponseEntity<String> uploadSocksJson(@RequestParam MultipartFile file) {
         try {
             socksService.importFile(file);
@@ -112,7 +112,7 @@ public class FileController {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(socksFile));
 
             return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(socksFile.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + socksFile.getName())
                     .body(resource);
@@ -136,7 +136,7 @@ public class FileController {
                     description = "Файл не принят на сервер, либо ошибка сервера. Обратитесь к администратору"
             )
     })
-    @GetMapping("/operations/import")
+    @GetMapping(value = "/operations/import", consumes = "multipart/from-data")
     public ResponseEntity<String> uploadSocksOperations(@RequestParam MultipartFile file) {
         try {
             storeOperationService.importFile(file);

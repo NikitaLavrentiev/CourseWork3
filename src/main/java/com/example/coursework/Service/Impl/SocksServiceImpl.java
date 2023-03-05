@@ -50,12 +50,13 @@ public class SocksServiceImpl implements SocksService {
     }
 
     @Override
-    public int getCount(Color color, Size size, int cottonMin, int cottonMax) throws ValidationException {
+    public int getCount(Color color, Size size, int cottonMin, int cottonMax) {
         if (!validationService.validate(color, size, cottonMin, cottonMax)) {
             throw new ValidationException();
         }
 
         Map<Socks, Integer> socksMap = socksRepository.getAll();
+        int sum = 0;
         for (Map.Entry<Socks, Integer> socksItem : socksMap.entrySet()) {
             Socks socks = socksItem.getKey();
 
@@ -63,11 +64,12 @@ public class SocksServiceImpl implements SocksService {
                     socks.getSize().equals(size) &&
                     socks.getCottonPart() >= cottonMin &&
                     socks.getCottonPart() <= cottonMax) {
-                return socksItem.getValue();
+                sum += socksItem.getValue();
             }
         }
-        return 0;
+        return sum;
     }
+
     @Override
     public File exportFile() throws IOException {
         return fileService.saveToFile(socksRepository.getList(), dataFilePath).toFile();
@@ -80,7 +82,7 @@ public class SocksServiceImpl implements SocksService {
         socksRepository.replace(socksBatchList);
     }
 
-    private void checkStocksBatch(SocksBatch socksBatch) throws ValidationException {
+    private void checkStocksBatch(SocksBatch socksBatch) {
         if (!validationService.validate((socksBatch))) {
             throw new ValidationException();
         }
