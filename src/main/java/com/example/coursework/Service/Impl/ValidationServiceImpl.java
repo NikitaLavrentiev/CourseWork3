@@ -1,9 +1,9 @@
-package Service.Impl;
+package com.example.coursework.Service.Impl;
 
-import Model.Color;
-import Model.Size;
-import Model.SocksBatch;
-import Service.ValidationService;
+import com.example.coursework.Model.Socks.Color;
+import com.example.coursework.Model.Socks.Size;
+import com.example.coursework.Model.Socks.SocksBatch;
+import com.example.coursework.Service.ValidationService;
 import org.springframework.stereotype.Service;
 
 @Service

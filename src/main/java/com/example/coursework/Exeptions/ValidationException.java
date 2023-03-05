@@ -1,4 +1,4 @@
-package Exeptions;
+package com.example.coursework.Exeptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

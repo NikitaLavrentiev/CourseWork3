@@ -1,4 +1,4 @@
-package Model;
+package com.example.coursework.Model.Socks;
 /**
  * Список размеров для носок
  */

@@ -1,4 +1,4 @@
-package dto;
+package com.example.coursework.dto;
 
 import lombok.Data;
 

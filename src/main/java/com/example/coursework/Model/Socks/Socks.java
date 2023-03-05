@@ -1,4 +1,4 @@
-package Model;
+package com.example.coursework.Model.Socks;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

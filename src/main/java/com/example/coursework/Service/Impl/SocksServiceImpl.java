@@ -1,16 +1,24 @@
-package Service.Impl;
+package com.example.coursework.Service.Impl;
 
-import Exeptions.ValidationException;
-import Model.Color;
-import Model.Size;
-import Model.Socks;
-import Model.SocksBatch;
-import Service.SocksService;
+import com.example.coursework.Exeptions.ValidationException;
+import com.example.coursework.Model.Socks.Color;
+import com.example.coursework.Model.Socks.Size;
+import com.example.coursework.Model.Socks.Socks;
+import com.example.coursework.Model.Socks.SocksBatch;
+import com.example.coursework.Service.FileService;
+import com.example.coursework.Service.SocksService;
+import com.example.coursework.Service.ValidationService;
+import com.example.coursework.repository.SocksRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import Service.ValidationService;
-import repository.SocksRepository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,6 +26,10 @@ import java.util.Map;
 public class SocksServiceImpl implements SocksService {
     private final SocksRepository socksRepository;
     private final ValidationService validationService;
+    private final FileService fileService;
+
+    @Value("${path.to.data.file}")
+    private Path dataFilePath;
 
     @Override
     public void accept(SocksBatch socksBatch) {
@@ -44,6 +56,7 @@ public class SocksServiceImpl implements SocksService {
         }
 
         Map<Socks, Integer> socksMap = socksRepository.getAll();
+        int sum = 0;
         for (Map.Entry<Socks, Integer> socksItem : socksMap.entrySet()) {
             Socks socks = socksItem.getKey();
 
@@ -51,10 +64,22 @@ public class SocksServiceImpl implements SocksService {
                     socks.getSize().equals(size) &&
                     socks.getCottonPart() >= cottonMin &&
                     socks.getCottonPart() <= cottonMax) {
-                return socksItem.getValue();
+                sum += socksItem.getValue();
             }
         }
-        return 0;
+        return sum;
+    }
+
+    @Override
+    public File exportFile() throws IOException {
+        return fileService.saveToFile(socksRepository.getList(), dataFilePath).toFile();
+    }
+
+    @Override
+    public void importFile(MultipartFile file) throws IOException {
+        List<SocksBatch> socksBatchList = fileService.uploadFromFile(file, dataFilePath, new TypeReference<>() {
+        });
+        socksRepository.replace(socksBatchList);
     }
 
     private void checkStocksBatch(SocksBatch socksBatch) {
